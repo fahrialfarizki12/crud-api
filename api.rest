@@ -1,0 +1,27 @@
+GET http://localhost:3000/users
+
+###
+GET http://localhost:3000/users/67b33f91cc59d0791ad4c6b6c/
+
+###
+DELETE http://localhost:3000/users/67b33e4eec15abdc98c80d44/
+
+###
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+  "name": "Aa Lovelace",
+  "email": "dan@da.com",
+  "password": "121xsas"
+}
+
+###
+PATCH http://localhost:3000/users/67b33f91cc590791ad4c6b6c
+Content-Type: application/json
+
+{
+  "name": "kelas dek",
+  "email": "kelas@da.com",
+  "password": "121xsas"
+}
