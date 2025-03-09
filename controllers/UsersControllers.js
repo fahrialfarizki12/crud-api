@@ -4,12 +4,34 @@ const prisma = new PrismaClient();
 
 export const getAllUsers = async (req, res, next) => {
   try {
-    const users = await prisma.user.findMany();
-    res.status(200).json(users);
+    const { page = 1, limit = 5, search = "" } = req.query;
+    const offset = (page - 1) * limit; //sudah int
+
+    const users = await prisma.user.findMany({
+      where: {
+        OR: [{ name: { contains: search } }, { email: { contains: search } }],
+      },
+
+      skip: offset, //0 mulai dari 0
+      take: parseInt(limit),
+    });
+
+    const totalUsers = await prisma.user.count({
+      where: {
+        OR: [{ name: { contains: search } }, { email: { contains: search } }],
+      },
+    });
+
+    res.status(200).json({
+      users,
+      totalUsers,
+      totalPage: Math.ceil(totalUsers / limit),
+    });
   } catch (error) {
     next(error);
   }
 };
+
 
 export const getUsersById = async (req, res, next) => {
   try {
